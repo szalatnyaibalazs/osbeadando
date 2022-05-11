@@ -1,0 +1,30 @@
+#!/bin/bash
+function letoltes()
+	{
+		curl https://anime-facts-rest-api.herokuapp.com/api/v1/fma_brotherhood -o facts.json
+	}
+function kirat()
+{
+local N=$(cat facts.json | jq .total_facts)
+local I=0
+while [ $I -lt $N ]
+do
+cat facts.json | jq .data[$I].fact | tr -d \"
+local I=$(($I + 1))
+done
+}
+
+while getopts :lk PARAM
+do
+ case $PARAM in
+  l)
+   letoltes
+   ;;
+  k)
+   kirat
+   ;; 
+  *)
+   echo "Érvénytelen paraméter!"
+   ;;
+  esac
+done
